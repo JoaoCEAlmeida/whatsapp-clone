@@ -7,19 +7,32 @@ import DonutLargeIcon from "@material-ui/icons/DonutLarge";
 import ChatIcon from "@material-ui/icons/Chat";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { SearchOutlined } from "@material-ui/icons";
+import { useStateValue } from "../store/StateProvider";
 
 import "./index.css";
+import db from "../firebase";
 
 const Sidebar = () => {
-  const [seed, setSeed] = useState("");
+  const [rooms, setRooms] = useState([]);
+
+  const [{ user }, dispatch] = useStateValue();
+
   useEffect(() => {
-    setSeed(Math.floor(Math.random() * 5000));
+    const unsubscribe = db
+      .collection("rooms")
+      .onSnapshot((snapshot) =>
+        setRooms(snapshot.docs.map((doc) => ({ id: doc.id, data: doc.data() })))
+      );
+
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   return (
     <div className="sidebar">
       <div className="sidebar__header">
-        <Avatar src={`https://avatars.dicebear.com/api/human/${seed}.svg`} />
+        <Avatar src={user?.photoURL} />
         <div className="sidebar__headerRight">
           <IconButton>
             <DonutLargeIcon />
@@ -40,7 +53,10 @@ const Sidebar = () => {
       </div>
       <div className="sidebar__chats">
         <SidebarChat addNewChat />
-        <SidebarChat />
+
+        {rooms.map((room) => (
+          <SidebarChat key={room.id} id={room.id} name={room.data.name} />
+        ))}
       </div>
     </div>
   );
