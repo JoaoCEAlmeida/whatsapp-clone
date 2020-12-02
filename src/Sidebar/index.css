@@ -1,3 +1,18 @@
+@media screen and (max-width: 579px) {
+  .sidebar {
+    flex: 0.1 !important;
+  }
+  .sidebar__header {
+    display: none !important;
+  }
+  .sidebar__search {
+    display: none !important;
+  }
+  .sidebarChat > .MuiAvatar-root {
+    display: none !important;
+  }
+}
+
 .sidebar {
   display: flex;
   flex-direction: column;

@@ -1,3 +1,15 @@
+@media screen and (max-width: 579px) {
+  .chat {
+    flex: 0.9 !important;
+  }
+  .chat__header {
+    display: none !important;
+  }
+  .chat__footer > .MuiSvgIcon-root {
+    display: none !important;
+  }
+}
+
 .chat {
   flex: 0.65;
   display: flex;
